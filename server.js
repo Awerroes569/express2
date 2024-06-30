@@ -12,13 +12,6 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use((req, res, next) => {
-    res.show = (name) => {
-      res.sendFile(path.join(__dirname, `/views/${name}`));
-    };
-    next();
-  });
-
 app.use(express.static(path.join(__dirname, '/public')));
 
 //ENDPOINTS
