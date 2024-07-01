@@ -1,50 +1,44 @@
 const express = require('express');
 const path = require('path');
+const hbs = require('express-handlebars');
 
 const app = express();
 
-//MIDDLEWARES
+//HANDLEBARS
+app.engine('.hbs', hbs.engine());
+app.set('view engine', '.hbs');
 
-app.use((req, res, next) => {
-  res.show = (name) => {
-    res.sendFile(path.join(__dirname, `/views/${name}`));
-  };
-  next();
-});
+//MIDDLEWARES
 
 app.use(express.static(path.join(__dirname, '/public')));
 
 //ENDPOINTS
 
 app.get('/', (req, res) => {
-    res.show('home.html');
+  res.render('home', {layout: false});
 });
 
 app.get('/home', (req, res) => {
-res.show('home.html');
+  res.render('home', {layout: false});
 });
 
 app.get('/hello/:name', (req, res) => {
-res.send(`Hello, ${req.params.name}`);
+  res.render('hello', { layout: false, name: req.params.name });
 });
 
 
 app.get('/about', (req, res) => {
-    res.show('about.html');
-  });
-  
-app.get('/about', (req, res) => {
-    res.show('about.html');
-  });
+  res.render('about', {layout: false});
+});
 
 app.get('/user/*', (req, res) => {
-    res.show('forbidden.html');
-  });
+  res.render('forbidden', {layout: false});
+});
 
 //ERROR HANDLING
 
 app.use((req, res) => {
-res.status(404).send('404 not found...');
+  res.render('404', {layout: false});
 })
 
 
